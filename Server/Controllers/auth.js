@@ -1,15 +1,35 @@
 const axios = require("axios");
-const mqtt = require('mqtt')
-const options = {
-    username: "iTi_2021_Waste",
-    password: "iTi_2021_Wastepass",
-    reconnectPeriod: 1000
-};
-let client;
+
+const mqttController = require("../Middlewares/mqtt");
+
+exports.signUp = async (req, res) => {
+    try {
+        const { name, floor, password } = req.body;
+        console.log(req.body);
+        // const response=signIn();
+        const response = await axios.post("https://beta.masterofthings.com/PostAppData", {
+            AppInfo: {
+                "AppId": 30,
+                "Auth": {
+                    "SecretKey": "CCY5Xbab7jU3FMJe1623667639892waste_users_form"
+                }
+            },
+            AppDate: [{
+                "Name": `${name}`,
+                "Floor": `${floor}`,
+                "Password": `${password}`
+            }]
+
+        })
+        return res.status(200).json(response.data.Result);
+    } catch (err) {
+        return res.status(500).json({ message: "Internal Server Error!" });
+    }
+}
 
 exports.signIn = async (req, res) => {
-    const { name, password } = req.body;
     try {
+        const { name, password } = req.body;
         const response = await axios.post("https://beta.masterofthings.com/GetAppReadingValueList", {
             AppId: 30,
             Auth: {
@@ -22,34 +42,25 @@ exports.signIn = async (req, res) => {
             }]
         })
         const userData = response.data.Result[0];
-        // const floor = userData.Floor;
+
         if (userData === undefined) {
-            return res.status(400).json({ message: "Not Valied UserName OR Not User! Please SinUp!" })
+            return res.status(202).json({ message: "Not Valied UserName OR Not User! Please SinUp!" })
         }
         else if (userData !== undefined && password !== userData.Password) {
-            return res.status(400).json({ message: "Not Valied Password!" });
+            return res.status(201).json({ message: "Not Valied Password!" });
+        } else {
+            const floor = userData.Floor;
+            // mqttController.mqttLogIn(floor);
+            return res.status(200).json(userData);
         }
-        // client = mqtt.connect('mqtt://beta.masterofthings.com', options)
-        // client.on('connect', function () {
-        //     console.log("Connected Successfully");
-        // })
-        // client.subscribe(`iTi/2021/Waste/Floor${floor}`);
-        // client.on('error', (error) => {
-        //     console.log("Can't connect" + error);
-        //     process.exit(1);
-        // })
-        // client.on('message', function (topic, message) {
-        //     console.log(message.toString())
-        // })
-        
-        return res.status(200).json(userData);
-
     } catch (err) {
         return res.status(500).json({ message: "Internal Server Error!" });
     }
 };
 exports.signOut = (req, res) => {
-    // client.unsubscribe(topic);
-    // client.end();
+    // mqttController.mqttLogOut();
     return res.status(200).json({ message: "Signed out!" });
 };
+
+
+

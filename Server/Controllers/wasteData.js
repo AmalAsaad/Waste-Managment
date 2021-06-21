@@ -1,4 +1,5 @@
 const axios = require("axios");
+const mqttController = require("../Middlewares/mqtt");
 exports.getFloorData = async (req, res) => {
   const { floor } = req.body;
   try {
@@ -49,6 +50,8 @@ exports.getFloorData = async (req, res) => {
       });
       finalReading.push(sensors.data.Result[0]);
     }
+    // const message = mqttController.mqttDashboard();
+    // const finalRes = [finalReading, message];
     return res.status(200).json(finalReading);
   } catch (err) {
     return res.status(500).json({ message: "Internal Server Error!" });

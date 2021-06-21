@@ -1,4 +1,4 @@
-import { Link, useHistory,Redirect } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import { useState, useContext } from "react";
 import { formContext } from "../Contexts";
@@ -8,31 +8,43 @@ import { formContext } from "../Contexts";
 const Login = () => {
   const [UserName, setUserName] = useState("");
   const [Password, setPassword] = useState("");
-  const {isSignedIn, setIsSignedIn } = useContext(formContext);
-  const {userName, setIsUserName}=useContext(formContext);
-  const {userFloor, setIsUserFloor}=useContext(formContext);
+  const { setIsSignedIn } = useContext(formContext);
+  const { setIsUserName } = useContext(formContext);
+  const { setIsUserFloor } = useContext(formContext);
+  const [passwordError, setPasswordError] = useState(false);
+  const [userNameError, setuserNameError] = useState(false);
+
   const history = useHistory();
   const handleSubmit = async (e) => {
+    setPasswordError(false);
+    setuserNameError(false);
+
     e.preventDefault();
-    console.log( UserName,  Password);
+    console.log(UserName, Password);
     try {
       const response = await axios.post("http://localhost:5000/login",
-      {
-        name:UserName,
-        password:Password
-      });
+        {
+          name: UserName,
+          password: Password
+        });
       console.log(response.data);
       if (response.status === 200) {
         setIsUserName(UserName);
         setIsUserFloor(response.data.Floor);
         // <Redirect to="/home"/>;
         history.push({
-          state:  setIsSignedIn(true),
+          state: setIsSignedIn(true),
           pathname: "/home",
         });
       }
+      else if (response.status === 201) {
+        setPasswordError(true);
+      }
+      else if (response.status === 202) {
+        setuserNameError(true);
+      }
     }
-     catch (err) {
+    catch (err) {
       const error = err.response;
       console.log(error);
     }
@@ -69,8 +81,8 @@ const Login = () => {
                   autoFocus
                   autoComplete="true"
                   required
-                value={UserName}
-                onChange={(e) => setUserName(e.target.value)}
+                  value={UserName}
+                  onChange={(e) => setUserName(e.target.value)}
                 />
               </div>
               <div className="mt-4">
@@ -84,8 +96,8 @@ const Login = () => {
                   placeholder="Your Password"
                   className="w-full px-4 py-2 text-base transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg ext-black-700 focus:border-red-500 focus:outline-none focus:shadow-outline focus:ring-2 ring-red-500 ring-offset-2"
                   required
-                value={Password}
-                onChange={(e) => setPassword(e.target.value)}
+                  value={Password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <div className="mt-2 text-right">
@@ -102,6 +114,12 @@ const Login = () => {
               >
                 Log In
               </button>
+              {passwordError && (
+                <p className="text-red-500 mt-2">Not Valied Password!</p>
+              )}
+              {userNameError && (
+                <p className="text-red-500 mt-2">Not Valied UserName OR Not Registered User!</p>
+              )}
             </form>
             <p className="mt-8 text-center">
               New Collector? Please
