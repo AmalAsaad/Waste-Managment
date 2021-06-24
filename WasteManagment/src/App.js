@@ -9,7 +9,7 @@ import Test from "./Components/Test"
 import { formContext } from "./Contexts";
 import { useContext, useEffect } from "react";
 
-import { EmptyLayout, LayoutRoute, MainLayout } from './Components/Layout';
+// import { EmptyLayout, LayoutRoute, MainLayout } from './Components/Layout';
 
 const App = () => {
   const {isSignedIn} = useContext(formContext);
@@ -27,11 +27,11 @@ const App = () => {
           {/* <Route exact path="/signup" component={withRouter(SignUp)} /> */}
           {isSignedIn && <Route exact path="/home" component={withRouter(UserDashboard)} />}
 
-          <LayoutRoute
+          {/* <LayoutRoute
               exact
               path="/login"
               layout={EmptyLayout}
-            />
+            /> */}
         </Switch>
       </Router>
     </>

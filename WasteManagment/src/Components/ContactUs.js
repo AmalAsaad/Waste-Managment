@@ -1,6 +1,8 @@
 // import './ContactUs.css';
 // import styles from "./ContactUs.css";
 import styles from './ContactUs.module.css'; 
+import  Footer from "./Footer";
+
 const ContactUs = () => {
 
 
@@ -17,7 +19,7 @@ const ContactUs = () => {
                         <div className={styles['form-inputs']}>
                             <label className={styles['form-label']}>Email</label>
                             <input
-                                className={styles['form-inputs']}
+                                className={styles['form-input']}
                                 type='text'
                                 name='username'
                                 placeholder='Enter your username'
@@ -29,7 +31,7 @@ const ContactUs = () => {
                         <div className={styles['form-inputs']}>
                             <label className={styles['form-label']}>message</label>
                             <input
-                                className={styles['form-inputs']}
+                                className={styles['form-input']}
                                 type='text'
                                 name='message'
                                 placeholder='Enter your message'
@@ -45,6 +47,7 @@ const ContactUs = () => {
                     </form>
                 </div>
             </div>
+            <Footer/>
 
             {/* <div className="container mx-auto my-20 w-1/3  bg-green-50">
                 <div className="my-3  mx-auto">
