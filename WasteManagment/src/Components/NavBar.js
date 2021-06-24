@@ -3,12 +3,38 @@ import { HashLink } from "react-router-hash-link";
 import { useContext } from "react";
 import { formContext } from "../Contexts/index";
 import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import './Navbar.css';
+//import { Button } from './Button'
 
 //NavBar component
 const NavBar = () => {
+
+  const [click, setClick] = useState(false);
+  const [button, setButton] = useState(true);
+
+  const handleClick = () => setClick(!click);
+  const closeMobileMenu = () => setClick(false);
+
+  const showButton = () => {
+    if (window.innerWidth <= 960) {
+      setButton(false);
+    } else {
+      setButton(true);
+    }
+  };
+
+  useEffect(() => {
+    showButton();
+  }, []);
+
+  window.addEventListener('resize', showButton);
+
+//////////////////////////////////////////////////////////////
   const history = useHistory();
   const { isSignedIn, setIsSignedIn } = useContext(formContext);
-  const handleClick = async (url) => {
+  
+  const handleLogin = async (url) => {
     if (!isSignedIn) {
       console.log(url);
       history.push(url);
@@ -28,6 +54,39 @@ const NavBar = () => {
   };
   return (
     <>
+    <nav className='navbar'>
+          <div className='navbar-container'>
+            <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
+              Waste Mangment
+              <i class='fab fa-typo3' />
+            </Link>
+
+            <div className='menu-icon' onClick={handleClick}>
+              <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+            </div>
+
+            <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+              <li className='nav-item'>
+                <Link to='/LandingPage' className='nav-links' onClick={closeMobileMenu}>
+                  Home
+                </Link>
+              </li>
+
+              <li className='nav-item'>
+                <Link to='/contact'className='nav-links'onClick={closeMobileMenu}>
+                  Contact Us
+                </Link>
+              </li>
+            </ul>
+          
+            <button className='btn--outline btn--medium' onClick={(e) => handleLogin("/login")}>
+            {isSignedIn ? "Logout" : "Login"}
+            </button>
+          </div>
+        </nav>
+
+
+{/*     
       <div className="text-gray-700 bg-white ">
         <div className="flex flex-col flex-wrap p-5 mx-auto border-b md:items-center md:flex-row">
           <Link to="/" className="pr-2 lg:pr-8 lg:px-6 focus:outline-none">
@@ -66,7 +125,7 @@ const NavBar = () => {
             )}
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

@@ -5,22 +5,33 @@ import SignUp from "./Components/SignUp";
 import NavBar from "./Components/NavBar";
 import ContactUs from "./Components/ContactUs";
 import UserDashboard from "./Components/UserDashboard";
+import Test from "./Components/Test"
 import { formContext } from "./Contexts";
 import { useContext, useEffect } from "react";
-import axios from "axios";
+
+import { EmptyLayout, LayoutRoute, MainLayout } from './Components/Layout';
+
 const App = () => {
   const {isSignedIn} = useContext(formContext);
-
   return (
     <>
       <Router>
         <NavBar />
         <Switch>
-          {/* <Route exact path="/" component={withRouter(LandingPage)} /> */}
+          <Route exact path="/" component={withRouter(LandingPage)} />
+          <Route exact path="/landingPage" component={withRouter(LandingPage)} />
           <Route exact path="/contact" component={withRouter(ContactUs)}/>
           <Route exact path="/login" component={withRouter(Login)} />
-          <Route exact path="/signup" component={withRouter(SignUp)} />
+          <Route exact path="/test" component={withRouter(Test)} />
+
+          {/* <Route exact path="/signup" component={withRouter(SignUp)} /> */}
           {isSignedIn && <Route exact path="/home" component={withRouter(UserDashboard)} />}
+
+          <LayoutRoute
+              exact
+              path="/login"
+              layout={EmptyLayout}
+            />
         </Switch>
       </Router>
     </>

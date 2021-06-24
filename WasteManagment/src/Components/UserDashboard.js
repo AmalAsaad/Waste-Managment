@@ -1,58 +1,88 @@
-import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
-import { useState, useContext } from "react";
+import React, { Component } from "react";
 import { formContext } from "../Contexts";
+import mqtt from "mqtt";
+import './UserDashboard.css';
+// import { options } from "../../../Server/Routes/auth";
+class UserDashboard extends Component {
 
-
-// UserDashboard component
-const UserDashboard = () => {
-    
-    let initState = [{}];
-    const [state] = useState(initState);
-    const { userFloor } = useContext(formContext);
-    console.log(userFloor);
-    const handleGetFloorData = async() => {
-        try {
-                const response = await axios({
-                    method: "POST",
-                    url: "http://localhost:5000/floor",
-                    data: {
-                        floor: userFloor
-                    }
-            });
-            if (response.status === 200) {
-                initState = response.data;
-            }
-
-        } catch (err) {
-            const error = err.response;
-            console.log(error);
+    static contextType = formContext;
+    state = { data: [{}], message: "" };
+    componentDidMount() {
+        const options = {
+            username: "iTi_2021_Waste",
+            password: "iTi_2021_Wastepass",
+            reconnectPeriod: 1000
+        };
+        const userFloor = this.context.userFloor;
+        this.client = mqtt.connect('wss://beta.masterofthings.com:1883/mqtt', options);
+        if(this.client){
+            this.client.subscribe(`iTi/2021/Waste/Floor${userFloor}`);
         }
-    };
-    handleGetFloorData();
-    console.log(handleGetFloorData());
-    return ( 
-        <>
-        <img src = "https://classroomclipart.com/images/gallery/Animations/Science/recycle-trash-can-animation.gif"/>
-        <div>
-        <table className = "table-auto border-separate border border-green-800... table" >
-        <tr key = { "header" } > {
-            Object.keys(state[0]).map((key) => ( <th className = "border border-green-600 ..." > { key } </th>
-            ))
-        } 
-        </tr> {
-            state.map((item) => ( <
-                tr key = { item.SensorId } > {
-                    Object.values(item).map((val) => ( <td className = "border border-green-600 ..." > { val } </td>
-                    ))
-                } </tr>
-            ))
-        } 
-        </table> 
-        </div> 
-        </>
-    )
+
+        this.client.on('connect', function () {
+            console.log("Connected Successfully");
+        })
+        
+        this.client.on("reconnect", () => {
+            console.log("Reconnecting");
+        });
+        this.client.on('error', (error) => {
+            console.log("Can't connect" + error);
+            process.exit(1);
+        })
+        this.client.on('message', function (topic, message) {
+            console.log(message.toString())
+            this.handleMqttMessage(JSON.parse(message.toString()));
+        })
 
 
+        axios({
+            method: "POST",
+            url: "http://localhost:5000/floor",
+            data: {
+                floor: userFloor
+            }
+        }).then(res => {
+            if (res.status === 200) {
+                this.setState({ data: res.data });
+                // this.setState({ message: res.data[1] });
+                // console.log(res.data);
+            }
+        })
+        console.log(userFloor)
+    }
+    handleMqttMessage = (json) => {
+        this.setState({ message: json });
+    }
+    render() {
+        return (
+            <>
+            <div className="container">
+
+                <table>
+                    {
+                        <tr key={"header"}>
+                            {Object.keys(this.state.data[0]).map((val) => (
+                                <th>{val}</th>
+                            ))}
+                        </tr>
+                    }
+                    {
+                        this.state.data.map((item) => (
+                        <tr key={item.id}>
+                            {Object.values(item).map((val) => (
+                                <td>{val}</td>
+                            ))}
+                        </tr>
+                        ))
+                    }
+                </table>
+              
+
+            </div>
+            </>
+        );
+    }
 }
-export default UserDashboard
+export default UserDashboard;
