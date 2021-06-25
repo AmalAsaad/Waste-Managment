@@ -16,7 +16,7 @@ const NavBar = () => {
       try {
         const response = await axios({
           method: "GET",
-          url: "http://localhost:5000/logout",
+          url: "http://localhost:3000/logout",
         });
         console.log(response);
         history.push("/login");

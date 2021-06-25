@@ -1,52 +1,28 @@
 import axios from "axios";
 import React, { Component } from "react";
 import { formContext } from "../Contexts";
-import mqtt from "mqtt";
+import io from "socket.io-client";
 // import { options } from "../../../Server/Routes/auth";
-class UserDashboard extends Component {
 
+const socket = io("http://localhost:8080");
+class UserDashboard extends Component {    
     static contextType = formContext;
     state = { data: [{}], message: "" };
     componentDidMount() {
-        const options = {
-            username: "iTi_2021_Waste",
-            password: "iTi_2021_Wastepass",
-            reconnectPeriod: 1000
-        };
         const userFloor = this.context.userFloor;
-        this.client = mqtt.connect('wss://beta.masterofthings.com:1883/mqtt', options);
-        if(this.client){
-            this.client.subscribe(`iTi/2021/Waste/Floor${userFloor}`);
-        }
-
-        this.client.on('connect', function () {
-            console.log("Connected Successfully");
-        })
-        
-        this.client.on("reconnect", () => {
-            console.log("Reconnecting");
+        socket.on("floor"+userFloor, message => {
+            console.log(message.toString());
+            this.setState({ message:message.toString() });
         });
-        this.client.on('error', (error) => {
-            console.log("Can't connect" + error);
-            process.exit(1);
-        })
-        this.client.on('message', function (topic, message) {
-            console.log(message.toString())
-            this.handleMqttMessage(JSON.parse(message.toString()));
-        })
-
-
         axios({
             method: "POST",
-            url: "http://localhost:5000/floor",
+            url: "http://localhost:3000/floor",
             data: {
                 floor: userFloor
             }
         }).then(res => {
             if (res.status === 200) {
                 this.setState({ data: res.data });
-                // this.setState({ message: res.data[1] });
-                // console.log(res.data);
             }
         })
         console.log(userFloor)
@@ -74,8 +50,14 @@ class UserDashboard extends Component {
                         </tr>
                     ))}
                 </table>
-                <div className="bg-yellow-500">
+                <div >
+                    <div >
+                       title: [name]
+                       body:
+                    </div>
 
+                </div>
+                <div className="bg-yellow-500">
                     {this.state.message}
                 </div>
             </>
