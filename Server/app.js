@@ -40,8 +40,16 @@ client.on('message', function (topic, message) {
   switch (floorNum) {
     case "1":
       io.emit("floor1", message.toString());
+      break;
+    case "2":
+      io.emit("floor2", message.toString());
+      break;
+    case "3":
+      io.emit("floor3", message.toString());
+      break;
   }
   console.log(message.toString());
+  console.log(JSON.parse(message.toString()));
   return message.toString();
 })
 
