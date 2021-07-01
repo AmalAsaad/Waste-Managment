@@ -2,8 +2,52 @@ import axios from "axios";
 import React, { Component } from "react";
 import { formContext } from "../Contexts";
 import mqtt from "mqtt";
+
 import './UserDashboard.css';
-// import { options } from "../../../Server/Routes/auth";
+class CardHeader extends React.Component {
+    render() {
+      // const { image } = this.props;
+      // var style = { 
+      //     backgroundImage: 'url(' + image + ')',
+      // };
+      return (
+        <header className="card-header">
+          <img src={this.props.img} />
+          <h4 className="card-header--title">{this.props.title}</h4>
+        </header>
+      )
+    }
+  }
+  
+  class CardBody extends React.Component {
+    render() {
+      return (
+        <div className="card-body">
+          {/* <p className="date">March 20 2015</p> */}
+          
+          {/* <h2>{this.props.title}</h2> */}
+          
+          {/* <p className="body-content">{this.props.text}</p> */}
+
+          {/* <Button /> */}
+        </div>
+      )
+    }
+  }
+  
+  class Card extends React.Component {
+    render() {
+      return (
+        <div className="card" >
+          <CardHeader img={'https://cdn.dribbble.com/users/2359873/screenshots/6714149/the-trash-can.gif'} title={this.props.title}/>
+          {/* <CardBody title={'What happened in Thialand?'} text={'Kayaks crowd Three Sister Springs, where people and manatees maintain controversial coexistence'}/> */}
+          <CardBody/>
+
+        </div>
+      )
+    }
+  }
+  
 class UserDashboard extends Component {
 
     static contextType = formContext;
@@ -58,31 +102,57 @@ class UserDashboard extends Component {
     render() {
         return (
             <>
-            <div className="container">
-
-                <table>
-                    {
-                        <tr key={"header"}>
-                            {Object.keys(this.state.data[0]).map((val) => (
-                                <th>{val}</th>
-                            ))}
-                        </tr>
-                    }
-                    {
-                        this.state.data.map((item) => (
-                        <tr key={item.id}>
-                            {Object.values(item).map((val) => (
-                                <td>{val}</td>
-                            ))}
-                        </tr>
-                        ))
-                    }
-                </table>
-              
-
+         {/* <div className='hero-container'>
+             <video src='/videos/video1.mp4' autoPlay loop muted />
+             */}
+            <div className="cards-container">
+              <Card title={"pasket 1"} />
+              <Card title={"pasket 2"}/>
+              <Card title={"pasket 3"}/>
             </div>
+
+            <div className="container">
+            <table>
+            {
+                <tr key={"header"}>
+                    {Object.keys(this.state.data[0]).map((val) => (
+                        <th>{val}</th>
+                    ))}
+                </tr>
+            }
+            {
+                this.state.data.map((item) => (
+                <tr key={item.id}>
+                    {Object.values(item).map((val) => (
+                        <td>{val}</td>
+                    ))}
+                </tr>
+                ))
+            }
+            </table>
+        </div>
+        {/* </div> */}
+
             </>
         );
     }
 }
 export default UserDashboard;
+
+
+// import React, { Component } from "react";
+
+// class UserDashboard extends Component {
+//   render() {
+//     return (
+//       <StackGrid
+//         columnWidth={350}
+//       >
+//         <div className="bbb" style={{marginLeft: 10 + 'px'}} key="key1"> <Card /></div>
+//         <div key="key2"> <Card /></div>
+//         <div key="key3"> <Card /></div>
+//       </StackGrid>
+//     );
+//   }
+// }
+// export default UserDashboard;

@@ -5,6 +5,7 @@ import SignUp from "./Components/SignUp";
 import NavBar from "./Components/NavBar";
 import ContactUs from "./Components/ContactUs";
 import UserDashboard from "./Components/UserDashboard";
+import AboutUs from "./Components/AboutUs";
 import Test from "./Components/Test"
 import { formContext } from "./Contexts";
 import { useContext, useEffect } from "react";
@@ -22,6 +23,7 @@ const App = () => {
           <Route exact path="/landingPage" component={withRouter(LandingPage)} />
           <Route exact path="/contact" component={withRouter(ContactUs)}/>
           <Route exact path="/login" component={withRouter(Login)} />
+          <Route exact path="/aboutUs" component={withRouter(AboutUs)} />
           <Route exact path="/test" component={withRouter(Test)} />
 
           {/* <Route exact path="/signup" component={withRouter(SignUp)} /> */}

@@ -77,6 +77,12 @@ const NavBar = () => {
                   Contact Us
                 </Link>
               </li>
+
+              <li className='nav-item'>
+                <Link to='/aboutUs'className='nav-links'onClick={closeMobileMenu}>
+                  About Us
+                </Link>
+              </li>
             </ul>
           
             <button className='btn--outline btn--medium' onClick={(e) => handleLogin("/login")}>

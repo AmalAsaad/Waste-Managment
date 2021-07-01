@@ -11,7 +11,7 @@ function Footer() {
         resources: [
             {
                 name: "How To start",
-                link: "/about"
+                link: "/contact"
             },
             {
                 name: "Contact",
@@ -19,7 +19,7 @@ function Footer() {
             },
             {
               name: "Our Team",
-              link: "/contact" 
+              link: "/aboutUs" 
             }
         ]
     },
