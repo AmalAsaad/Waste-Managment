@@ -59,7 +59,10 @@ tr:last-child td:last-child { border-bottom-right-radius: 10px; }
   box-shadow: 10px 5px 40px 20px #144e03;
   cursor: pointer;
 }
-
+.icons{
+  margin-top: 10px;
+  display: flex;
+}
 .card-header {
   border-top-left-radius: 10px;
   border-top-right-radius:10px;
@@ -77,6 +80,7 @@ tr:last-child td:last-child { border-bottom-right-radius: 10px; }
   margin: 0;
 }
 .card-body {
+  margin-top: 40px;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   padding: 15px;
