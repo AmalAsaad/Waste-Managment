@@ -99,14 +99,7 @@ const Login = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <div className="mt-2 text-right">
-                <a
-                  href="#"
-                  className="text-sm font-semibold leading-relaxed text-gray-700 hover:text-red-700 focus:text-black-700"
-                >
-                  Forgot Password?
-                </a>
-              </div>
+            
               <button
                 type="submit"
                 className="block w-full px-4 py-3 mt-6 font-semibold text-white transition duration-500 ease-in-out transform bg-green-500 rounded-lg hover:bg-yellow-500 hover:to-black focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2"
@@ -120,15 +113,7 @@ const Login = () => {
                 <p className="text-red-500 mt-2">Not Valied UserName OR Not Registered User!</p>
               )}
             </form>
-            <p className="mt-8 text-center">
-              New Collector? Please
-              <Link
-                to="/signup"
-                className="font-semibold text-black-500 hover:text-red-400"
-              >
-                Sign Up
-              </Link>
-            </p>
+         
           </div>
         </div>
       </section>
