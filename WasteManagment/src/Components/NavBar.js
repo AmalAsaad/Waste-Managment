@@ -66,12 +66,17 @@ const NavBar = () => {
             </div>
 
             <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+
               <li className='nav-item'>
                 <Link to='/LandingPage' className='nav-links' onClick={closeMobileMenu}>
                   Home
                 </Link>
               </li>
-
+              <li className='nav-item'>
+                <Link to='/UserDashboard' className='nav-links' onClick={closeMobileMenu}>
+                Dashboard
+                </Link>
+              </li>
               <li className='nav-item'>
                 <Link to='/contact'className='nav-links'onClick={closeMobileMenu}>
                   Contact Us

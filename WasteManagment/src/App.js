@@ -23,6 +23,7 @@ const App = () => {
           <Route exact path="/contact" component={withRouter(ContactUs)}/>
           <Route exact path="/login" component={withRouter(Login)} />
           <Route exact path="/aboutUs" component={withRouter(AboutUs)} />
+          <Route exact path="/UserDashboard" component={withRouter(UserDashboard)} />
           {isSignedIn && <Route exact path="/home" component={withRouter(UserDashboard)} />}
         </Switch>
       </Router>
