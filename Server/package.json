@@ -1,0 +1,19 @@
+{
+  "name": "smartwasting",
+  "version": "1.0.0",
+  "description": "smart waste managment system",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cors": "^2.8.5",
+    "eventsource": "^1.1.0",
+    "express": "^4.17.1",
+    "mqtt": "^4.2.6",
+    "socket.io": "^4.1.2"
+  }
+}
