@@ -4,7 +4,9 @@ import { formContext } from "../Contexts";
 import io from "socket.io-client";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card } from 'react-bootstrap';
-import { FaBatteryQuarter, FaTrash, FaCommentDots, FaBoxOpen } from "react-icons/fa";
+import { IconContext } from "react-icons";
+
+import { FaBatteryQuarter, FaTrash, FaTrashAlt, FaTrashRestore, FaCommentDots, FaBoxOpen, FaBatteryFull, FaBatteryThreeQuarters } from "react-icons/fa";
 
 // import { options } from "../../../Server/Routes/auth";
 
@@ -51,8 +53,6 @@ class UserDashboard extends Component {
     render() {
         return (
             <>
-                {/* <img src="https://classroomclipart.com/images/gallery/Animations/Science/recycle-trash-can-animation.gif" /> */}
-
                 <div className="container">
                     <div className="row justify-content-md-center">
                         <Card class="col-lg-4" style={{ width: '18rem' }}>
@@ -63,14 +63,18 @@ class UserDashboard extends Component {
                                 </Card.Title>
                                 <div className=" border-2 border-black">
                                     <Card.Text >
-                                        < FaBatteryQuarter />{this.state.arrB1.battery}
+                                        {this.state.arrB1.battery < 10 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBatteryQuarter /> Battery Law!</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaBatteryThreeQuarters /></IconContext.Provider>}
+                                        {this.state.arrB1.battery}%
                                     </Card.Text>
                                     <Card.Text>
-                                        <FaTrash /> {this.state.arrB1.fillLevel}
+                                        {this.state.arrB1.fillLevel >= 90 && this.state.arrB1.fillLevel <= 100 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaTrash /> Basket Full !</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaTrashAlt /></IconContext.Provider>}
+                                        {this.state.arrB1.fillLevel}%
 
                                     </Card.Text>
                                     <Card.Text>
-                                        <FaBoxOpen />{this.state.arrB1.state}
+                                        {this.state.arrB1.state === "Open" ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBoxOpen /></IconContext.Provider> : <IconContext.Provider value={{ color: "black", size: "2em", className: "react-icons" }}><FaTrashRestore /></IconContext.Provider>}
+                                        {this.state.arrB1.state}
+
                                     </Card.Text>
                                 </div>
                             </Card.Body>
@@ -83,16 +87,19 @@ class UserDashboard extends Component {
                                 </Card.Title>
                                 <div className=" border-2 border-black">
                                     <Card.Text >
-                                        < FaBatteryQuarter />{this.state.arrB2.battery}
+                                        {this.state.arrB2.battery < 10 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBatteryQuarter /> Battery Law!</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaBatteryThreeQuarters /></IconContext.Provider>}
+                                        {this.state.arrB2.battery}%
                                     </Card.Text>
                                     <Card.Text>
-                                        <FaTrash /> {this.state.arrB2.fillLevel}
+                                        {this.state.arrB2.fillLevel >= 90 && this.state.arrB2.fillLevel <= 100 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaTrash /> Basket Full !</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaTrashAlt /></IconContext.Provider>}
+                                        {this.state.arrB2.fillLevel}%
 
                                     </Card.Text>
                                     <Card.Text>
-                                        <FaBoxOpen />{this.state.arrB2.state}
-                                    </Card.Text>
+                                        {this.state.arrB2.state === "Open" ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBoxOpen /></IconContext.Provider> : <IconContext.Provider value={{ color: "black", size: "2em", className: "react-icons" }}><FaTrashRestore /></IconContext.Provider>}
+                                        {this.state.arrB2.state}
 
+                                    </Card.Text>
                                 </div>
                             </Card.Body>
                         </Card>
@@ -104,14 +111,18 @@ class UserDashboard extends Component {
                                 </Card.Title>
                                 <div className=" border-2 border-black">
                                     <Card.Text >
-                                        < FaBatteryQuarter />{this.state.arrB3.battery}
+                                        {this.state.arrB3.battery < 10 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBatteryQuarter /> Battery Law!</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaBatteryThreeQuarters /></IconContext.Provider>}
+                                        {this.state.arrB3.battery}%
                                     </Card.Text>
                                     <Card.Text>
-                                        <FaTrash /> {this.state.arrB3.fillLevel}
+                                        {this.state.arrB3.fillLevel >= 90 && this.state.arrB3.fillLevel <= 100 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaTrash /> Basket Full !</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaTrashAlt /></IconContext.Provider>}
+                                        {this.state.arrB3.fillLevel}%
 
                                     </Card.Text>
                                     <Card.Text>
-                                        <FaBoxOpen />{this.state.arrB3.state}
+                                        {this.state.arrB3.state === "Open" ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBoxOpen /></IconContext.Provider> : <IconContext.Provider value={{ color: "black", size: "2em", className: "react-icons" }}><FaTrashRestore /></IconContext.Provider>}
+                                        {this.state.arrB3.state}
+
                                     </Card.Text>
 
                                 </div>
