@@ -1,6 +1,5 @@
 const axios = require("axios");
 
-const mqttController = require("../Middlewares/mqtt");
 
 exports.signUp = async (req, res) => {
     try {
@@ -26,7 +25,6 @@ exports.signUp = async (req, res) => {
         return res.status(500).json({ message: "Internal Server Error!" });
     }
 }
-
 exports.signIn = async (req, res) => {
     try {
         const { name, password } = req.body;
@@ -50,7 +48,8 @@ exports.signIn = async (req, res) => {
             return res.status(201).json({ message: "Not Valied Password!" });
         } else {
             const floor = userData.Floor;
-            // mqttController.mqttLogIn(floor);
+            
+            
             return res.status(200).json(userData);
         }
     } catch (err) {

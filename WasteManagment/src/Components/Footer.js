@@ -49,7 +49,7 @@ function Footer() {
     youtube="UCFt6TSF464J8K82xeA?"
     pinterest="fluffy_cats_collections"
     copyright="black"
-    iconColor="black"
+    iconColor="red"
     backgroundColor="#242424"
     fontColor="white"
     copyrightColor="darkgrey"

@@ -22,8 +22,7 @@ import styles from './AboutUs.module.css';
     }
   
   
-class UserDashboard extends Component {
-
+class AboutUs extends Component {
     render() {
         return (
             <>
@@ -51,7 +50,7 @@ class UserDashboard extends Component {
             author="islam hany"
           />
           <Card
-            img="https://media-exp3.licdn.com/dms/image/D4E35AQHHR2VigGyZPA/profile-framedphoto-shrink_200_200/0/1623710648365?e=1625094000&v=beta&t=426vrx-RlgYAELnBwl8bGYaniJAw4zfPMvOa3a4bJBQ"
+            img="amaal.jpg"
             link="https://www.linkedin.com/in/amaal-asaad-3b0b33125/"
             title="Amaal Assad"
             author="amaal asaad"
@@ -63,4 +62,4 @@ class UserDashboard extends Component {
         );
     }
 }
-export default UserDashboard;
+export default AboutUs;

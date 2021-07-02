@@ -6,7 +6,7 @@ const options = {
 };
 let client;
 exports.mqttLogIn = (floor) => {
-    client = mqtt.connect('mqtt://beta.masterofthings.com', options)
+    client = mqtt.connect('mqtt://beta.masterofthings.com', options);
     client.on('connect', function () {
         console.log("Connected Successfully");
     })
@@ -18,7 +18,6 @@ exports.mqttLogIn = (floor) => {
 }
 exports.mqttDashboard = () => {
     client.on('message', function (topic, message) {
-        console.log(message.toString())
         return message.toString();
     })
 }

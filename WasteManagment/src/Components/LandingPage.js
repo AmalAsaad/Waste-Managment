@@ -32,8 +32,8 @@ const LandingPage = () => {
         <div className='hero-container'>
              <video src='/videos/video1.mp4' autoPlay loop muted />
 
-            <h1>HEY ENTA</h1>
-            <p>3ndk zbala ? e7na hnlmha</p>
+            <h1>The Future</h1>
+            <p>Of Building's Waste Managment</p>
             <div className='hero-btns'>
             <button className='btns btn--outline btn--large'onClick={(e) => handleLogin("/login")}>
                GET STARTED

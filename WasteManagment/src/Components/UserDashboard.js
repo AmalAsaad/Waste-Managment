@@ -2,44 +2,70 @@ import axios from "axios";
 import io from "socket.io-client";
 import React, { Component } from "react";
 import { formContext } from "../Contexts";
-import mqtt from "mqtt";
-import './UserDashboard.css';
+// import io from "socket.io-client";
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import { Card } from 'react-bootstrap';
 import { IconContext } from "react-icons";
+
 import { FaBatteryQuarter, FaTrash, FaTrashAlt, FaTrashRestore, FaCommentDots, FaBoxOpen, FaBatteryFull, FaBatteryThreeQuarters } from "react-icons/fa";
 
+import './UserDashboard.css';
+const socket = io("http://localhost:8080");
+class CardHeader extends React.Component {
+    render() {
+        return (
+            <header className="card-header">
+                <img src={this.props.img} />
+                <h4 className="card-header--title">{this.props.title}</h4>
+            </header>
+        )
+    }
+}
 
-// class Card extends React.Component {
-//     render() {
-//         return (
-//             <div className="card">
-//                 <img src={this.props.img} />
-//                 <div className="card-body">
-                  
-//                     <div>
-//                        {this.props.battery}
-//                        {this.props.battery2}
-//                         {/* {this.state.arrB1.battery < 10 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBatteryQuarter /> Battery Law!</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaBatteryThreeQuarters /></IconContext.Provider>}
-//                         {this.state.arrB1.battery}% */}
-//                     </div>
-//                     <div>
-//                         {this.props.fillLevel}
-//                         {/* {this.state.arrB1.fillLevel >= 90 && this.state.arrB1.fillLevel <= 100 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaTrash /> Basket Full !</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaTrashAlt /></IconContext.Provider>}
-//                         {this.state.arrB1.fillLevel}% */}
+class CardBody extends React.Component {
+    render() {
+        return (
+            <div className="card-body">
+                <div className="icons">
+                    {this.props.batteryIcon}
+                    <h5> {this.props.battery}%</h5>
+                </div>
 
-//                     </div>
-//                     <div>
-//                         {this.props.state}
-//                         {/* {this.state.arrB1.state === "Open" ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBoxOpen /></IconContext.Provider> : <IconContext.Provider value={{ color: "black", size: "2em", className: "react-icons" }}><FaTrashRestore /></IconContext.Provider>}
-//                         {this.state.arrB1.state} */}
+                <div className="icons">
+                    {this.props.fillLevelIcon}
+                    <h5>{this.props.fillLevel}%</h5>
+                </div>
 
-//                     </div>
-//                 </div>
-//             </div>
-//         );
-//     }
+                <div className="icons">
+                    {this.props.stateIcon}
+                    <h5>{this.props.state}</h5>
+                </div>
 
-// }
+            </div>
+        )
+    }
+}
 
+class Card extends React.Component {
+    render() {
+        return (
+            <div className="card" >
+                <CardHeader img={'https://cdn.dribbble.com/users/2359873/screenshots/6714149/the-trash-can.gif'} title={this.props.title} />
+                {/* <CardBody title={'What happened in Thialand?'} text={'Kayaks crowd Three Sister Springs, where people and manatees maintain controversial coexistence'}/> */}
+                <CardBody
+                    batteryIcon={this.props.batteryIcon}
+                    battery={this.props.battery}
+                    fillLevelIcon={this.props.fillLevelIcon}
+                    fillLevel={this.props.fillLevel}
+                    stateIcon={this.props.stateIcon}
+                    state={this.props.state}
+                />
+
+
+            </div>
+        )
+    }
+}
 
 // class UserDashboard extends Component {
 //     render() {
@@ -146,64 +172,6 @@ import { FaBatteryQuarter, FaTrash, FaTrashAlt, FaTrashRestore, FaCommentDots, F
 //         )
 //     }
 // }
-class CardHeader extends React.Component {
-  render() {
-      return (
-          <header className="card-header">
-              <img src={this.props.img} />
-              <h4 className="card-header--title">{this.props.title}</h4>
-          </header>
-      )
-  }
-}
-
-class CardBody extends React.Component {
-  render() {
-      return (
-          <div className="card-body">
-               <div className="icons">
-                     {this.props.batteryIcon}
-                     <h5> {this.props.battery}</h5>               
-                   </div>
-
-                   <div className="icons">
-                       {this.props.fillLevelIcon}
-                      <h5>{this.props.fillLevel}</h5>                        
-                   </div>
-
-                   <div className="icons">
-                       {this.props.stateIcon}
-                       <h5>{this.props.state}</h5>                 
-                  </div>
-
-          </div>
-      )
-  }
-}
-
-class Card extends React.Component {
-  render() {
-      return (
-          <div className="card" >
-              <CardHeader img={'https://cdn.dribbble.com/users/2359873/screenshots/6714149/the-trash-can.gif'} title={this.props.title} />
-              {/* <CardBody title={'What happened in Thialand?'} text={'Kayaks crowd Three Sister Springs, where people and manatees maintain controversial coexistence'}/> */}
-              <CardBody 
-              batteryIcon={this.props.batteryIcon} 
-              battery={this.props.battery}
-              fillLevelIcon= {this.props.fillLevelIcon}
-              fillLevel= {this.props.fillLevel} 
-              stateIcon= {this.props.stateIcon}
-              state= {this.props.state}      
-              />
-              
-              
-          </div>
-      )
-  }
-}
-
-const socket = io("http://localhost:8080");
-
 class UserDashboard extends Component {
     static contextType = formContext;
     state = { data: [{}], arrB1: {}, arrB2: {}, arrB3: {} };
@@ -219,10 +187,8 @@ class UserDashboard extends Component {
             }
             else if (JSON.parse(message.toString()).bName === "f1b3") {
                 this.state.arrB3 = JSON.parse(message.toString());
-                console.log("5raaaaaa////////")
-             console.log(this.state.arrB1);
             }
-             
+            // console.log(this.state.arrB1);
 
             this.handleMqttMessage(JSON.parse(message.toString()));
         })
@@ -248,33 +214,33 @@ class UserDashboard extends Component {
         return (
             <>
                 <div className="cards-container">
-                    <Card title={"Basket 1"} 
-                        batteryIcon={this.state.arrB1.battery < 10 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBatteryQuarter /> Battery Law!</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaBatteryThreeQuarters />{this.state.arrB1.battery}</IconContext.Provider>}
+                    <Card title={"Basket 1"}
                         battery={this.state.arrB1.battery}
-                        fillLevelIcon={this.state.arrB1.fillLevel >= 90 && this.state.arrB3.fillLevel <= 100 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaTrash /> Basket Full !</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaTrashAlt /></IconContext.Provider>}
-                        fillLevel= {this.state.arrB1.fillLevel}
-                        stateIcon= {this.state.arrB1.state === "Open" ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBoxOpen /></IconContext.Provider> : <IconContext.Provider value={{ color: "black", size: "2em", className: "react-icons" }}><FaTrashRestore /></IconContext.Provider>}
+                        batteryIcon={this.state.arrB1.battery < 10 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBatteryQuarter /> Battery Law</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaBatteryThreeQuarters /></IconContext.Provider>}
+                        fillLevel={this.state.arrB1.fillLevel}
+                        fillLevelIcon={this.state.arrB1.fillLevel >= 90 && this.state.arrB1.fillLevel <= 100 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaTrash /> Basket Full</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaTrashAlt /></IconContext.Provider>}
+                        stateIcon={this.state.arrB1.state === "Open" ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBoxOpen /></IconContext.Provider> : <IconContext.Provider value={{ color: "black", size: "2em", className: "react-icons" }}><FaTrashRestore /></IconContext.Provider>}
                         state={this.state.arrB1.state}
-                        
-                        />
-                    
-                    <Card title={"Basket 2"} 
-                     batteryIcon={this.state.arrB2.battery < 10 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBatteryQuarter /> Battery Law!</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaBatteryThreeQuarters />GOOD</IconContext.Provider>}
-                     battery="{this.state.arrB2.battery}"
-                     fillLevelIcon={this.state.arrB2.fillLevel >= 90 && this.state.arrB3.fillLevel <= 100 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaTrash /> Basket Full !</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaTrashAlt />GooD</IconContext.Provider>}
-                     fillLevel= {this.state.arrB2.fillLevel}
-                     stateIcon= {this.state.arrB2.state === "Open" ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBoxOpen /></IconContext.Provider> : <IconContext.Provider value={{ color: "black", size: "2em", className: "react-icons" }}><FaTrashRestore />Good</IconContext.Provider>}
-                     state={this.state.arrB2.state}
-                     />
+
+                    />
+
+                    <Card title={"Basket 2"}
+                        batteryIcon={this.state.arrB2.battery < 10 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBatteryQuarter /> Battery Law</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaBatteryThreeQuarters /></IconContext.Provider>}
+                        battery={this.state.arrB2.battery}
+                        fillLevelIcon={this.state.arrB2.fillLevel >= 90 && this.state.arrB2.fillLevel <= 100 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaTrash /> Basket Full </IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaTrashAlt /></IconContext.Provider>}
+                        fillLevel={this.state.arrB2.fillLevel}
+                        stateIcon={this.state.arrB2.state === "Open" ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBoxOpen /></IconContext.Provider> : <IconContext.Provider value={{ color: "black", size: "2em", className: "react-icons" }}><FaTrashRestore /></IconContext.Provider>}
+                        state={this.state.arrB2.state}
+                    />
 
                     <Card title={"Basket 3"}
-                     batteryIcon={this.state.arrB3.battery < 10 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBatteryQuarter /> Battery Law!</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaBatteryThreeQuarters /></IconContext.Provider>}
-                     battery={this.state.arrB3.battery}
-                     fillLevelIcon={this.state.arrB3.fillLevel >= 90 && this.state.arrB3.fillLevel <= 100 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaTrash /> Basket Full !</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaTrashAlt /></IconContext.Provider>}
-                     fillLevel= {this.state.arrB3.fillLevel}
-                     stateIcon= {this.state.arrB3.state === "Open" ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBoxOpen /></IconContext.Provider> : <IconContext.Provider value={{ color: "black", size: "2em", className: "react-icons" }}><FaTrashRestore /></IconContext.Provider>}
-                     state={this.state.arrB3.state}
-                      />
+                        batteryIcon={this.state.arrB3.battery < 10 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBatteryQuarter /> Battery Law</IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaBatteryThreeQuarters /></IconContext.Provider>}
+                        battery={this.state.arrB3.battery}
+                        fillLevelIcon={this.state.arrB3.fillLevel >= 90 && this.state.arrB3.fillLevel <= 100 ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaTrash /> Basket Full </IconContext.Provider> : <IconContext.Provider value={{ color: "blue", size: "2em", className: "react-icons" }}><FaTrashAlt /></IconContext.Provider>}
+                        fillLevel={this.state.arrB3.fillLevel}
+                        stateIcon={this.state.arrB3.state === "Open" ? <IconContext.Provider value={{ color: "red", size: "2em", className: "react-icons" }}>< FaBoxOpen /></IconContext.Provider> : <IconContext.Provider value={{ color: "black", size: "2em", className: "react-icons" }}><FaTrashRestore /></IconContext.Provider>}
+                        state={this.state.arrB3.state}
+                    />
                 </div>
 
                 <div className="container">
@@ -304,136 +270,3 @@ class UserDashboard extends Component {
     }
 }
 export default UserDashboard;
-
-
-
-// import axios from "axios";
-// import React, { Component } from "react";
-// import { formContext } from "../Contexts";
-// import mqtt from "mqtt";
-// import './UserDashboard.css';
-
-// class CardHeader extends React.Component {
-//     render() {
-//       return (
-//         <header className="card-header">
-//           <img src={this.props.img} />
-//           <h4 className="card-header--title">{this.props.title}</h4>
-//         </header>
-//       )
-//     }
-//   }
-  
-//   class CardBody extends React.Component {
-//     render() {
-//       return (
-//         <div className="card-body">
-//           {/* <p className="date">March 20 2015</p> */}
-          
-//           {/* <h2>{this.props.title}</h2> */}
-          
-//           {/* <p className="body-content">{this.props.text}</p> */}
-
-//           {/* <Button /> */}
-//         </div>
-//       )
-//     }
-//   }
-  
-//   class Card extends React.Component {
-//     render() {
-//       return (
-//         <div className="card" >
-//           <CardHeader img={'https://cdn.dribbble.com/users/2359873/screenshots/6714149/the-trash-can.gif'} title={this.props.title}/>
-//           {/* <CardBody title={'What happened in Thialand?'} text={'Kayaks crowd Three Sister Springs, where people and manatees maintain controversial coexistence'}/> */}
-//           <CardBody/>
-
-//         </div>
-//       )
-//     }
-//   }
-  
-// class UserDashboard extends Component {
-
-//     static contextType = formContext;
-//     state = { data: [{}], message: "" };
-//     componentDidMount() {
-//         const options = {
-//             username: "iTi_2021_Waste",
-//             password: "iTi_2021_Wastepass",
-//             reconnectPeriod: 1000
-//         };
-//         const userFloor = this.context.userFloor;
-//         this.client = mqtt.connect('wss://beta.masterofthings.com:1883/mqtt', options);
-//         if(this.client){
-//             this.client.subscribe(`iTi/2021/Waste/Floor${userFloor}`);
-//         }
-
-//         this.client.on('connect', function () {
-//             console.log("Connected Successfully");
-//         })
-        
-//         this.client.on("reconnect", () => {
-//             console.log("Reconnecting");
-//         });
-//         this.client.on('error', (error) => {
-//             console.log("Can't connect" + error);
-//             process.exit(1);
-//         })
-//         this.client.on('message', function (topic, message) {
-//             console.log(message.toString())
-//             this.handleMqttMessage(JSON.parse(message.toString()));
-//         })
-
-
-//         axios({
-//             method: "POST",
-//             url: "http://localhost:5000/floor",
-//             data: {
-//                 floor: userFloor
-//             }
-//         }).then(res => {
-//             if (res.status === 200) {
-//                 this.setState({ data: res.data });
-//             }
-//         })
-//         console.log(userFloor)
-//     }
-//     handleMqttMessage = (json) => {
-//         this.setState({ message: json });
-//     }
-//     render() {
-//         return (
-//             <>
-//             <div className="cards-container">
-//               <Card title={"pasket 1"} />
-//               <Card title={"pasket 2"}/>
-//               <Card title={"pasket 3"}/>
-//             </div>
-
-//             <div className="container">
-//             <table>
-//             {
-//                 <tr key={"header"}>
-//                     {Object.keys(this.state.data[0]).map((val) => (
-//                         <th>{val}</th>
-//                     ))}
-//                 </tr>
-//             }
-//             {
-//                 this.state.data.map((item) => (
-//                 <tr key={item.id}>
-//                     {Object.values(item).map((val) => (
-//                         <td>{val}</td>
-//                     ))}
-//                 </tr>
-//                 ))
-//             }
-//             </table>
-//         </div>
-//             </>
-//         );
-//     }
-// }
-// export default UserDashboard;
-
