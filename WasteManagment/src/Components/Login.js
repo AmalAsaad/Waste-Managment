@@ -1,3 +1,5 @@
+
+import './Login.css';
 import { Link, useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import { useState, useContext } from "react";
@@ -18,7 +20,6 @@ const Login = () => {
   const handleSubmit = async (e) => {
     setPasswordError(false);
     setuserNameError(false);
-
     e.preventDefault();
     console.log(UserName, Password);
     try {
@@ -31,7 +32,6 @@ const Login = () => {
       if (response.status === 200) {
         setIsUserName(UserName);
         setIsUserFloor(response.data.Floor);
-        // <Redirect to="/home"/>;
         history.push({
           state: setIsSignedIn(true),
           pathname: "/home",
@@ -76,9 +76,8 @@ const Login = () => {
                   type="text"
                   name=""
                   id=""
-                  placeholder="Your User Name "
+                  placeholder="Your User Name"
                   className="w-full px-4 py-2 mt-2 text-base transition duration-500 ease-in-out transform bg-gray-100 border-transparent rounded-lg ext-black-700 focus:border-red-500 focus:outline-none focus:shadow-outline focus:ring-2 ring-red-500 ring-offset-2"
-                  autoFocus
                   autoComplete="true"
                   required
                   value={UserName}

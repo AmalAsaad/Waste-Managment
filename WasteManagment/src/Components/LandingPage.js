@@ -2,23 +2,46 @@ import { Link, useHistory, Redirect } from "react-router-dom";
 import axios from "axios";
 import { useState, useContext } from "react";
 import { formContext } from "../Contexts";
-
+import  Footer from "./Footer";
+import './LandingPage.css';
 
 //landingPage component
-const landingPage = () => {
+const LandingPage = () => {
+    const history = useHistory();
+    const { isSignedIn, setIsSignedIn } = useContext(formContext);
+    const handleLogin = async (url) => {
+        if (!isSignedIn) {
+          console.log(url);
+          history.push(url);
+        } else {
+          try {
+            const response = await axios({
+              method: "GET",
+              url: "http://localhost:5000/logout",
+            });
+            console.log(response);
+            history.push("/login");
+            setIsSignedIn(false);
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      };
     return (
         <>
-            <div className="relative  w-full h-screen  lg:block md:w-1/3 lg:w-2/3">
-                <img
-                    src="landscape.2jpg.jpg"
-                    alt=""
-                    className="absolute object-cover w-full h-full"
-                />
-            </div>
+        <div className='hero-container'>
+             <video src='/videos/video1.mp4' autoPlay loop muted />
 
+            <h1>The Future</h1>
+            <p>Of Building's Waste Managment</p>
+            <div className='hero-btns'>
+            <button className='btns btn--outline btn--large'onClick={(e) => handleLogin("/login")}>
+               GET STARTED
+             </button>
+            </div>
+        </div>
+      <Footer />
         </>
     )
-
-
 }
-export default landingPage;
+export default LandingPage;
